@@ -70,6 +70,17 @@ fn to_base64(byte_input: Vec<u8>) -> String {
 	return output;
 }
 
+fn xor_equal_vecu8(input1:Vec<u8>, input2:Vec<u8>) -> Vec<u8> {
+	assert_eq!(input1.len(), input2.len());
+	let mut output:Vec<u8> = Vec::with_capacity(input1.len());
+
+	for i in 0..input1.len() {
+		output.push(input1[i] ^ input2[i])
+	}
+
+	output
+}
+
 fn set1exercise1() {
 	let input = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
 	let output = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t";
@@ -81,11 +92,32 @@ fn set1exercise1() {
 	println!("Should produce when converted to Base64:");
 	println!("{}", output);
 	let actual = convert_hex2base64(input);
+	println!("We got:");
 	println!("{}", actual);
 	assert_eq!(actual, output);
 }
+fn set1exercise2() {
+	let input1 = "1c0111001f010100061a024b53535009181c";
+	let input2 = "686974207468652062756c6c277320657965";
+	let output = "746865206b696420646f6e277420706c6179";
+
+	println!("Set 1, exercise 2:");
+	println!("The HEX string:");
+	println!("{}", input1);
+	println!("When XORed against:");
+	println!("{}", input2);
+	println!("Should produce:");
+	println!("{}", output);
+	println!("We got:");
+
+	let actual = to_hex(xor_equal_vecu8(from_hex(input1), from_hex(input2)));	
+	println!("{}", actual);
+	assert_eq!(actual, output);
+}
+
 fn set1() {
 	set1exercise1();
+	set1exercise2();
 }
 
 fn main() {
