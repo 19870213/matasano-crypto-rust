@@ -70,12 +70,12 @@ fn to_base64(byte_input: Vec<u8>) -> String {
 	return output;
 }
 
-fn xor_equal_vecu8(input1:Vec<u8>, input2:Vec<u8>) -> Vec<u8> {
-	assert_eq!(input1.len(), input2.len());
-	let mut output:Vec<u8> = Vec::with_capacity(input1.len());
-
-	for i in 0..input1.len() {
-		output.push(input1[i] ^ input2[i])
+fn xor_with_key(input:Vec<u8>, key:Vec<u8>) -> Vec<u8> {
+	let mut output:Vec<u8> = Vec::with_capacity(input.len());
+	let mut key_i:usize = 0;
+	for input_i in 0..input.len() {
+		output.push(input[input_i] ^ key[key_i]);
+		key_i = (key_i + 1) % key.len();
 	}
 
 	output
@@ -110,14 +110,23 @@ fn set1exercise2() {
 	println!("{}", output);
 	println!("We got:");
 
-	let actual = to_hex(xor_equal_vecu8(from_hex(input1), from_hex(input2)));	
+	let actual = to_hex(xor_with_key(from_hex(input1), from_hex(input2)));
 	println!("{}", actual);
 	assert_eq!(actual, output);
+}
+
+fn set1exercise3() {
+	let input = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
+	println!("Set 1, exercise 3:");
+	let output_bin = from_hex(input);
+	let result_bin = String::from_utf8(output_bin);
+	println!("Binary? {}", result_bin.iter().next().unwrap());
 }
 
 fn set1() {
 	set1exercise1();
 	set1exercise2();
+	set1exercise3();
 }
 
 fn main() {
